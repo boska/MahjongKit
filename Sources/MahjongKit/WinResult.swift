@@ -27,6 +27,7 @@ public struct WinContext: Sendable {
     public var flowers: [Tile]     // 本局補到的花牌
     public var openMelds: [MeldType] // 已公開吃碰槓
     public var winningTile: Tile?  // 胡的那張（判斷放槍時哪組刻子非暗刻）
+    public var isSingleWait: Bool   // 獨聽：只等一張牌
 
     public init(
         isTsumo: Bool = false,
@@ -38,7 +39,8 @@ public struct WinContext: Sendable {
         roundWind: Int = 1,
         flowers: [Tile] = [],
         openMelds: [MeldType] = [],
-        winningTile: Tile? = nil
+        winningTile: Tile? = nil,
+        isSingleWait: Bool = false
     ) {
         self.isTsumo = isTsumo
         self.isClosedHand = isClosedHand
@@ -50,5 +52,6 @@ public struct WinContext: Sendable {
         self.flowers = flowers
         self.openMelds = openMelds
         self.winningTile = winningTile
+        self.isSingleWait = isSingleWait
     }
 }

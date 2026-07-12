@@ -29,6 +29,7 @@ public enum ScoringCondition: Hashable, Sendable, CustomStringConvertible {
     case allFromOthers      // 全求人 2台
     case haitei             // 海底撈月 1台
     case kongBloom          // 槓上開花 1台
+    case singleWait         // 獨聽（單吊/邊張/中洞）1台
 
     public var taiValue: Int {
         switch self {
@@ -57,6 +58,7 @@ public enum ScoringCondition: Hashable, Sendable, CustomStringConvertible {
         case .allFromOthers:                 return 2
         case .haitei:                        return 1
         case .kongBloom:                     return 1
+        case .singleWait:                    return 1
         }
     }
 
@@ -90,6 +92,7 @@ public enum ScoringCondition: Hashable, Sendable, CustomStringConvertible {
         case .allFromOthers:     return "全求人"
         case .haitei:            return "海底撈月"
         case .kongBloom:         return "槓上開花"
+        case .singleWait:        return "獨聽"
         }
     }
 }
@@ -121,6 +124,9 @@ public struct ScoreCalculator {
             let allMelds = result.melds + context.openMelds
             if isPinhu(result: result, allMelds: allMelds) { conds.append(.pinhu) }
             if isToitoi(allMelds: allMelds)                { conds.append(.toitoi) }
+
+            // 獨聽（單吊/邊張/中洞）— 1台，與平胡互斥（平胡需兩面聽）
+            if context.isSingleWait && !conds.contains(.pinhu) { conds.append(.singleWait) }
 
             let suitCond = flushCondition(pair: result.pair, allMelds: allMelds)
             if let c = suitCond { conds.append(c) }

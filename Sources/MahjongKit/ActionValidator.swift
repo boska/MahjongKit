@@ -39,13 +39,13 @@ public struct ActionValidator {
         hand.filter { $0 == discard }.count >= 3
     }
 
-    // MARK: - 暗槓 Closed Kong（手牌自己有 4 張）
+    // MARK: - 暗槓 Closed Kong（手牌自己有 4 張或以上）
 
-    /// 回傳所有可暗槓的牌
+    /// 回傳所有可暗槓的牌（手牌中有 4 張或以上的）
     public static func canClosedKong(hand: [Tile]) -> [Tile] {
         var counts: [Tile: Int] = [:]
         for t in hand { counts[t, default: 0] += 1 }
-        return counts.compactMap { $0.value == 4 ? $0.key : nil }
+        return counts.compactMap { $0.value >= 4 ? $0.key : nil }
     }
 
     // MARK: - 加槓 Added Kong（把手牌中的牌接在已碰的刻子上）
